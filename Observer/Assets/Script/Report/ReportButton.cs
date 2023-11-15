@@ -11,24 +11,25 @@ public class ReportButton : MonoBehaviour
     [SerializeField] Phenomenon.ObjectType objectType = default;
     //レポートボタン
     private GameObject reportButton = default;
+    
 
     private void Start()
     {
         //レポートボタンを検索する
-        reportButton = GameObject.Find("Report");
+        reportButton = GameObject.Find("ReportManager");
     }
     /// <summary>
     /// 部屋報告ボタン
     /// </summary>
     public void ClickRoomButton()
     {
-        reportButton.GetComponent<ReportProcess>().SetReportRoom(room);
+        reportButton.GetComponent<ReportProcess>().SetReportRoom(room,this.transform.position);
     }
     /// <summary>
     /// オブジェクトタイプ報告ボタン
     /// </summary>
     public void ClickTypeButton()
     {
-        reportButton.GetComponent<ReportProcess>().SetReportObjectType(objectType);
+        reportButton.GetComponent<ReportProcess>().SetReportObjectType(objectType,this.transform.position);
     }
 }

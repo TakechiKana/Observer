@@ -25,7 +25,7 @@ public class Phenomenon : ScriptableObject
         Default,            //Default
         Light,              //ライトの変化
         AddObject,          //追加オブジェクト
-        DisappearObject,    //消失オブジェクト
+        Vanish,    //消失オブジェクト
         Move,               //オブジェクトの移動
         Door,               //ドアの開閉
         Image,              //画像変化

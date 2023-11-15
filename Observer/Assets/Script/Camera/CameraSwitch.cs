@@ -33,7 +33,7 @@ public class CameraSwitch : MonoBehaviour
             _cameraNo = MAX_CAMERA_NO;
         }
         //カメラの切り替え
-        cameraManager.GetComponent<CameraManager>().SwitchCamera(_cameraNo);
+        cameraManager.GetComponent<CameraManager>().SwitchCamera();
     }
     /// <summary>
     /// 右ボタンがクリックされたら
@@ -53,6 +53,6 @@ public class CameraSwitch : MonoBehaviour
             _cameraNo = 0;
         }
         //カメラの切り替え
-        cameraManager.GetComponent<CameraManager>().SwitchCamera(_cameraNo);
+        cameraManager.GetComponent<CameraManager>().SwitchCamera();
     }
 }

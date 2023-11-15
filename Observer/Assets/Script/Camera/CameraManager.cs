@@ -21,6 +21,10 @@ public class CameraManager : MonoBehaviour
     private TextMeshProUGUI cameraNoText = default;                             //カメラ番号のテキストオブジェクト
     private Vector3 camera1Pos = default;                                       //メインカメラ初期座標
     private Quaternion camera1Rot= default;                                     //メインカメラ初期回転
+    //カメラ番号
+    private int _cameraNo = default;
+    //カメラ番号の上限
+    private const int MAX_CAMERA_NO = 4;
 
 
     void Start()
@@ -68,11 +72,6 @@ public class CameraManager : MonoBehaviour
     //関数：カメラ1を有効化
     public void ActiveCamera1()
     {
-        //camera2.gameObject.SetActive(false);
-        //camera3.gameObject.SetActive(false);
-        //camera4.gameObject.SetActive(false);
-        //camera5.gameObject.SetActive(false);
-        //camera1.gameObject.SetActive(true);
         camera1.transform.position = camera1Pos;
         camera1.transform.rotation = camera1Rot;
 
@@ -82,11 +81,6 @@ public class CameraManager : MonoBehaviour
     //関数：カメラ2を有効化
     public void ActiveCamera2()
     {
-        //camera1.gameObject.SetActive(false);
-        //camera3.gameObject.SetActive(false);
-        //camera4.gameObject.SetActive(false);
-        //camera5.gameObject.SetActive(false);
-        //camera2.gameObject.SetActive(true);
         camera1.transform.position = camera2.transform.position;
         camera1.transform.rotation = camera2.transform.rotation;
 
@@ -96,12 +90,6 @@ public class CameraManager : MonoBehaviour
     //関数：カメラ3を有効化
     public void ActiveCamera3()
     {
-        //camera1.gameObject.SetActive(false);
-        //camera2.gameObject.SetActive(false);
-        //camera4.gameObject.SetActive(false);
-        //camera5.gameObject.SetActive(false);
-        //camera3.gameObject.SetActive(true);
-
         camera1.transform.position = camera3.transform.position;
         camera1.transform.rotation = camera3.transform.rotation;
 
@@ -110,11 +98,6 @@ public class CameraManager : MonoBehaviour
     //関数：カメラ4を有効化
     public void ActiveCamera4()
     {
-        //camera1.gameObject.SetActive(false);
-        //camera2.gameObject.SetActive(false);
-        //camera3.gameObject.SetActive(false);
-        //camera5.gameObject.SetActive(false);
-        //camera4.gameObject.SetActive(true);
         camera1.transform.position = camera4.transform.position;
         camera1.transform.rotation = camera4.transform.rotation;
 
@@ -123,23 +106,18 @@ public class CameraManager : MonoBehaviour
     //関数：カメラ5を有効化
     public void ActiveCamera5()
     {
-        //camera1.gameObject.SetActive(false);
-        //camera2.gameObject.SetActive(false);
-        //camera3.gameObject.SetActive(false);
-        //camera4.gameObject.SetActive(false);
-        //camera5.gameObject.SetActive(true);
         camera1.transform.position = camera5.transform.position;
         camera1.transform.rotation = camera5.transform.rotation;
 
         cameraNoText.text = "Camera5";
     }
 
-    public void SwitchCamera(int cameraNO)
+    public void SwitchCamera()
     {
         //ノイズを発生させる
         switchCameraFlag = true;
 
-        switch (cameraNO)
+        switch (_cameraNo)
         {
             case 0:
                 ActiveCamera1();
@@ -165,5 +143,43 @@ public class CameraManager : MonoBehaviour
     public bool GetSwitchCameraFlag()
     {
         return switchCameraFlag;
+    }
+
+    public void ClickButtonL()
+    {
+        if (GetSwitchCameraFlag())
+        {
+            return;
+        }
+        //カメラ番号を1下げる
+        _cameraNo -= 1;
+        //カメラ番号が0未満になったら
+        if (_cameraNo < 0)
+        {
+            //カメラ番号を3にする
+            _cameraNo = MAX_CAMERA_NO;
+        }
+        //カメラの切り替え
+        SwitchCamera();
+    }
+    /// <summary>
+    /// 右ボタンがクリックされたら
+    /// </summary>
+    public void ClickButtonR()
+    {
+        if (GetSwitchCameraFlag())
+        {
+            return;
+        }
+        //カメラ番号を1上げる
+        _cameraNo += 1;
+        //カメラ番号が4以上になったら
+        if (_cameraNo > MAX_CAMERA_NO)
+        {
+            //カメラ番号を0にする
+            _cameraNo = 0;
+        }
+        //カメラの切り替え
+        SwitchCamera();
     }
 }

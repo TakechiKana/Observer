@@ -61,7 +61,7 @@ public class PhenomenonLists : MonoBehaviour
         Phenomenon.ObjectType phenoType = obj.GetComponent<ObjectTypeManager>().GetObjectType();
         //オブジェクトタイプが、通常時はアクティブであるオブジェクトだった場合
         //消失、ライト
-        if(phenoType == Phenomenon.ObjectType.DisappearObject
+        if(phenoType == Phenomenon.ObjectType.Vanish
             || phenoType == Phenomenon.ObjectType.Light)
         {
             //正を返す
