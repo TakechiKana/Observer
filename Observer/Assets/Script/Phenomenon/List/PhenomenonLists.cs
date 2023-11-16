@@ -103,7 +103,7 @@ public class PhenomenonLists : MonoBehaviour
         ///
         if(ableToCreateList.Count<=0)
         {
-            Debug.Log("0Dayo");
+            Debug.Log("発生可能なオブジェクトなし");
             return;
         }
         ///
@@ -113,7 +113,8 @@ public class PhenomenonLists : MonoBehaviour
         int rand = Random.Range(0, ableToCreateList.Count);
 
         ///デバッグ
-        Debug.Log(ableToCreateList[rand]);
+        Debug.Log($"{ableToCreateList[rand].GetComponent<ObjectTypeManager>().GetRooms()}," +
+            $"{ableToCreateList[rand].GetComponent<ObjectTypeManager>().GetObjectType()}");
 
         //変数にオブジェクトを格納する
         GameObject gameObj = ableToCreateList[rand];
@@ -168,13 +169,13 @@ public class PhenomenonLists : MonoBehaviour
                     alreadyCreateList.RemoveAt(i);
 
                     ///デバッグ
-                    Debug.Log("報告成功");
+                    Debug.Log("通報成功");
                     return;
                 }
             }
         }
         ///デバッグ
-        Debug.Log("報告失敗");
+        Debug.Log("通報失敗");
         
         //一致するオブジェクトが無かったら
         return;

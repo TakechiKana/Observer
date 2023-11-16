@@ -5,45 +5,50 @@ using TMPro;
 
 public class ReportAnim : MonoBehaviour
 {
+    [Header("レポートマネージャー")]
+    [SerializeField] GameObject _repotManager = default;
     //レポート中テキスト
     private TextMeshProUGUI _reportingText = default;
     //文字数制限用タイマー
     private float _stringNumTimer = default;
+    //アニメーション回数
+    private int _animNum = 0;
+    //アニメーション回数上限（定数）
+    private const int ANIM_NUM_MAX = 5;
+    //アニメーションが終わったか判定
+    private bool _doAnimation = false;
 
     void Start()
     {
         _reportingText = this.gameObject.GetComponent<TextMeshProUGUI>();
     }
 
+    private void OnEnable()
+    {
+        _doAnimation = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if(!_doAnimation)
+        {
+            return;
+        }
+        //5回以上になったら
+        if(_animNum >= 5)
+        {
+            //レポート内容が正しいか判定
+            _repotManager.GetComponent<ReportProcess>().ReportJudge();
+            //アニメーション中フラグをfalseにする
+            _doAnimation = false;
+            //アニメーション回数をリセットする
+            _animNum = 0;
+            //自身を非表示
+            this.gameObject.SetActive(false);
+        }
         //タイマー
         _stringNumTimer += Time.deltaTime;
-        /////////////////////////////////////////
-        //if (_stringNumTimer < 0.25f)
-        //{
-        //    _reportingText.maxVisibleCharacters = 8;
-        //    return;
-        //}
-        //if (_stringNumTimer < 0.50f)
-        //{
-        //    _reportingText.maxVisibleCharacters = 9;
-        //    return;
-        //}
-        //if (_stringNumTimer < 0.75f)
-        //{
-        //    _reportingText.maxVisibleCharacters = 10;
-        //    return;
-        //}
-        //if (_stringNumTimer < 1.0f)
-        //{
-        //    _reportingText.maxVisibleCharacters = 11;
-        //    return;
-        //}
-        ////////////////////////////////
-        
-
         if (_stringNumTimer < 0.1f)
         {
             _reportingText.maxVisibleCharacters = 0;
@@ -90,5 +95,7 @@ public class ReportAnim : MonoBehaviour
             return;
         }
         _stringNumTimer = 0.0f;
+        //回数を1足す
+        _animNum += 1;
     }
 }
