@@ -12,9 +12,8 @@ public class ObjectTypeManager : MonoBehaviour
     [SerializeField]
     private bool isOutbreak = false;
     [Header("危険度")]
-    private int risk = 1;
-    //[Header("発生時に追加処理がある場合、ここにコンポーネント(スクリプト)を追加する")]
-    //public Component outbreakProcess = null;
+    [SerializeField]
+    private int _riskValue = 1;
     
     /// <summary>
     /// 異常現象の発生地(部屋)の取得
@@ -36,9 +35,9 @@ public class ObjectTypeManager : MonoBehaviour
     /// 危険度の取得
     /// </summary>
     /// <returns>危険度</returns>
-    public int GetRisk()
+    public int GetRiskValue()
     {
-        return risk;
+        return _riskValue;
     }
     /// <summary>
     /// 異常現象発生中か取得

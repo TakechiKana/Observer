@@ -31,13 +31,10 @@ public class Phenomenon : ScriptableObject
         Image,              //画像変化
         Ghost               //怪異
     }
+
     //部屋タイプ
-    [Header ("部屋タイプ")]
-    [SerializeField]
     private Rooms _room = default;
     //オブジェクトタイプ
-    [Header("オブジェクトタイプ")]
-    [SerializeField]
     private ObjectType _objectType = default;
 
     /// <summary>
@@ -49,7 +46,7 @@ public class Phenomenon : ScriptableObject
         return _room;
     }
     /// <summary>
-    /// オブジェクト屋タイプの取得
+    /// オブジェクトタイプの取得
     /// </summary>
     /// <returns>オブジェクトタイプ</returns>
     public ObjectType GetObjectType()

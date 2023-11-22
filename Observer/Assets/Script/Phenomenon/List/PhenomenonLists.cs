@@ -8,11 +8,14 @@ public class PhenomenonLists : MonoBehaviour
     private List<GameObject> ableToCreateList = new List<GameObject>();
     //生成後異常現象list
     private List<GameObject> alreadyCreateList = new List<GameObject>();
-    //生成用タイマー
+    [Header("生成用タイマー")]
     [SerializeField] private float timer = 15.0f;
-    //オブジェクトカウント用変数
-    //全体数
+    //タイマー再設定定数
+    private const float TIMER_MAX = 10.0f;
+    //オブジェクトカウント全体数
     private int allPhenomenonCount = 0;
+    //プレイヤーステートがアタッチされたオブジェクト
+    private GameObject playerState = default;
 
 
     /// <summary>
@@ -28,6 +31,7 @@ public class PhenomenonLists : MonoBehaviour
         }
         //全体数格納
         allPhenomenonCount = ableToCreateList.Count;
+        playerState = GameObject.Find("GameRule");
     }
 
 
@@ -36,16 +40,14 @@ public class PhenomenonLists : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        //異常発生用タイマーのカウントダウン
         timer -= Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Space) || timer < 0)
+        if (/*デバッグ用*/Input.GetKeyDown(KeyCode.Space) || timer < 0)
         {
-
             //異常現象発生
             MakePhenomenon();
             //タイマー再設定
-            timer = 10.0f;
-            //デバッグ
-            //DebugMethod();
+            timer = TIMER_MAX;
         }
         
     }
@@ -112,16 +114,22 @@ public class PhenomenonLists : MonoBehaviour
         //乱数の生成
         int rand = Random.Range(0, ableToCreateList.Count);
 
+
+        //変数にオブジェクトを格納する
+        GameObject gameObj = ableToCreateList[rand];
+
+        //プレイヤーの危険度を設定(加算)する。
+        playerState.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(),true);
+
         ///デバッグ
         Debug.Log($"{ableToCreateList[rand].GetComponent<ObjectTypeManager>().GetRooms()}," +
             $"{ableToCreateList[rand].GetComponent<ObjectTypeManager>().GetObjectType()}");
 
-        //変数にオブジェクトを格納する
-        GameObject gameObj = ableToCreateList[rand];
         //発生済み現象をリスト化する
         alreadyCreateList.Add(ableToCreateList[rand]);
         //未発生現象リストから削除する
         ableToCreateList.RemoveAt(rand);
+
         //オブジェクトが非アクティブの場合
         if(!gameObj.activeSelf)
         {
@@ -182,12 +190,13 @@ public class PhenomenonLists : MonoBehaviour
 
     }
 
-
     /// <summary>
-    /// 異常現象を発生させる
+    /// 異常現象を修正する
     /// </summary>
     private void FixPhenomenon(GameObject gameObj)
     {
+        //プレイヤーの危険度を設定(減算)する。
+        playerState.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(), false);
         //オブジェクトが非アクティブの場合
         if (!gameObj.activeSelf)
         {
@@ -204,7 +213,7 @@ public class PhenomenonLists : MonoBehaviour
             gameObj.SetActive(false);
             return;
         }
-        //現象発生フラグを正にする
+        //現象発生フラグを消す
         gameObj.GetComponent<ObjectTypeManager>().SetIsOutbreakOff();
         return;
     }
