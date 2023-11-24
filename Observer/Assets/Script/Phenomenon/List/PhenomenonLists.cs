@@ -14,8 +14,12 @@ public class PhenomenonLists : MonoBehaviour
     private const float TIMER_MAX = 10.0f;
     //オブジェクトカウント全体数
     private int allPhenomenonCount = 0;
-    //プレイヤーステートがアタッチされたオブジェクト
-    private GameObject playerState = default;
+    //プレイヤーステート、ゲームタイムがアタッチされたオブジェクト
+    private GameObject _gameRule = default;
+    [Header("レポート後テキスト")]
+    [SerializeField] GameObject _afterReportText = default;
+    [Header("レポート成功画面")]
+    [SerializeField] GameObject _reportSuccessScreen = default;
 
 
     /// <summary>
@@ -31,7 +35,7 @@ public class PhenomenonLists : MonoBehaviour
         }
         //全体数格納
         allPhenomenonCount = ableToCreateList.Count;
-        playerState = GameObject.Find("GameRule");
+        _gameRule = GameObject.Find("GameRule");
     }
 
 
@@ -40,6 +44,12 @@ public class PhenomenonLists : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        //ゲームタイムが止まっているとき
+        if(!_gameRule.GetComponent<GameTime>().GetGameTimeFlag())
+        {
+            //処理しない
+            return;
+        }
         //異常発生用タイマーのカウントダウン
         timer -= Time.deltaTime;
         if (/*デバッグ用*/Input.GetKeyDown(KeyCode.Space) || timer < 0)
@@ -119,7 +129,7 @@ public class PhenomenonLists : MonoBehaviour
         GameObject gameObj = ableToCreateList[rand];
 
         //プレイヤーの危険度を設定(加算)する。
-        playerState.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(),true);
+        _gameRule.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(),true);
 
         ///デバッグ
         Debug.Log($"{ableToCreateList[rand].GetComponent<ObjectTypeManager>().GetRooms()}," +
@@ -175,15 +185,19 @@ public class PhenomenonLists : MonoBehaviour
                     ableToCreateList.Add(alreadyCreateList[i]);
                     //発生中リストから削除
                     alreadyCreateList.RemoveAt(i);
-
+                    //レポート成功画面の表示
+                    _reportSuccessScreen.SetActive(true);
                     ///デバッグ
-                    Debug.Log("通報成功");
+                    //Debug.Log("通報成功");
                     return;
                 }
             }
         }
+        //レポート失敗テキストの表示
+        _afterReportText.GetComponent<AfterRepotText>().SetDisplayMessage(false);
+        _afterReportText.SetActive(true);
         ///デバッグ
-        Debug.Log("通報失敗");
+        //Debug.Log("通報失敗");
         
         //一致するオブジェクトが無かったら
         return;
@@ -196,7 +210,7 @@ public class PhenomenonLists : MonoBehaviour
     private void FixPhenomenon(GameObject gameObj)
     {
         //プレイヤーの危険度を設定(減算)する。
-        playerState.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(), false);
+        _gameRule.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(), false);
         //オブジェクトが非アクティブの場合
         if (!gameObj.activeSelf)
         {

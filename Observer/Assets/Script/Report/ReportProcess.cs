@@ -16,6 +16,7 @@ public class ReportProcess : MonoBehaviour
     [SerializeField] GameObject _repotingMessageObj = default;
     [Header("レポートスクリーン")]
     [SerializeField] GameObject _reportScreen = default;
+    
     [Header("レポートメニュー")]
     [SerializeField] GameObject _reportMenu = default;
     [Header("カメラの選択中アイコン")] 
@@ -40,10 +41,6 @@ public class ReportProcess : MonoBehaviour
         {
             //報告できない場合、エラーメッセージを表示する。
             _errorMessageObj.SetActive(true);           
-            ////デバッグ
-            //Debug.Log("Report Miss");
-            //Debug.Log(objectType);
-            //Debug.Log(room);
             return;
         }
 
@@ -72,7 +69,7 @@ public class ReportProcess : MonoBehaviour
         _reportMenu.SetActive(true);
 
         //デバッグ
-        Debug.Log("送信成功");
+        //Debug.Log("送信成功");
         //内容をリセット
         ReportCansel();
     }
@@ -103,7 +100,7 @@ public class ReportProcess : MonoBehaviour
         selectedType.SetActive(true);
 
         //デバッグ
-        Debug.Log($"Type Set! {objectType}");
+        //Debug.Log($"Type Set! {objectType}");
     }
 
 
@@ -118,6 +115,6 @@ public class ReportProcess : MonoBehaviour
         selectedCamera.transform.position = pos;
         selectedCamera.SetActive(true);
         //デバッグ
-        Debug.Log($"Room Set! {room}");
+        //Debug.Log($"Room Set! {room}");
     }
 }

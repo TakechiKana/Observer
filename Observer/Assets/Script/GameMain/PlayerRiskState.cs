@@ -84,7 +84,7 @@ public class PlayerRiskState : MonoBehaviour
         }
         PlayerStateManager();
         //デバッグ　
-        Debug.Log(_playerRiskPoint);
+        Debug.Log($"危険度{_playerRiskPoint}");
     }
     /// <summary>
     /// 危険度の取得。

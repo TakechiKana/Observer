@@ -49,12 +49,18 @@ public class GameTime : MonoBehaviour
         //時間表示(分)
         _gameTimeMinuteText.text = Mathf.Floor(_gameTimeMinute).ToString("00");
     }
-
-    void SetGameTimeFlag(bool flag)
+    /// <summary>
+    /// ゲームタイムの制御
+    /// </summary>
+    /// <param name="flag"></param>
+    public void SetGameTimeFlag(bool flag)
     {
         _gameTimeFlag = flag;
     }
-
+    /// <summary>
+    /// ゲームタイムの取得
+    /// </summary>
+    /// <returns></returns>
     public bool GetGameTimeFlag()
     {
         return _gameTimeFlag;
