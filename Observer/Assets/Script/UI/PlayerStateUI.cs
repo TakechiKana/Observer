@@ -25,6 +25,10 @@ public class PlayerStateUI : MonoBehaviour
     //None
     private const float NONE_HIGHT = 30;
     private const float NONE_SPEED = 20;
+    ////数値間の距離
+    //private Vector3 _distance = default;
+    ////計算用のフラグ
+    //private bool _calcFlag = false;
 
     void Start()
     {
@@ -35,6 +39,7 @@ public class PlayerStateUI : MonoBehaviour
         //サイズとスピードの設定
         SetNoneLevel();
     }
+
     /// <summary>
     /// 異常なし
     /// </summary>
