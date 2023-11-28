@@ -27,15 +27,28 @@ public class PhenomenonLists : MonoBehaviour
     /// </summary>
     void Start()
     {
-        //異常現象生成用のリスト作成
-        for (int i = 0; i < this.transform.childCount; i++)
-        {
-            //listにゲームオブジェクトを格納していく
-            ableToCreateList.Add(this.transform.GetChild(i).gameObject);
-        }
-        //全体数格納
-        allPhenomenonCount = ableToCreateList.Count;
+        ////異常現象生成用のリスト作成
+        //for (int i = 0; i < this.transform.childCount; i++)
+        //{
+        //    //listにゲームオブジェクトを格納していく
+        //    ableToCreateList.Add(this.transform.GetChild(i).gameObject);
+        //}
+        ////全体数格納
+        //allPhenomenonCount = ableToCreateList.Count;
+
+        //ゲームルールオブジェクトの取得
         _gameRule = GameObject.Find("GameRule");
+    }
+
+    /// <summary>
+    /// 生成可能オブジェクトリストへ追加
+    /// </summary>
+    /// <param name="gameObj">リストに追加するGameObject</param>
+    public void AddAbleToCreateList(GameObject gameObj)
+    {
+        ableToCreateList.Add(gameObj);
+        allPhenomenonCount += 1;
+
     }
 
 

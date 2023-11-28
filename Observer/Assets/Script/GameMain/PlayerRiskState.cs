@@ -4,14 +4,34 @@ using UnityEngine;
 
 public class PlayerRiskState : MonoBehaviour
 {
-    private int _playerRiskPoint = 0;            //プレイヤーの危険度
+    [SerializeField] private int _playerRiskPoint = 0;            //プレイヤーの危険度
     private const int PLAYER_RISK_MAX = 10;       //危険度の上限
     private const int PLAYER_RISK_HIGH = 7;      //危険度High
     private const int PLAYER_RISK_MIDDLE =4;    //危険度Middle
     private const int PLAYER_RISK_LOW = 1;       //危険度Low
-    private bool _isGameOver = false;
+    private bool _isDanger = false;               //危険度MAXフラグ
+    [SerializeField] private float _gameOverTimer = 0.0f;        //ゲームオーバーまでの制限時間
+    private float MAX_GAMEOVER_TIMER = 10.0f;        //ゲームオーバーまでの制限時間
     [Header("ステート用UI")]
     [SerializeField] private GameObject _stateUI = default;
+
+    private void Update()
+    {
+        //危険度がMAX出ないとき
+        if(!_isDanger)
+        {
+            //処理しない
+            return;
+        }
+        //ゲームオーバータイマーが0になったら
+        if(_gameOverTimer <= 0)
+        {
+            this.GetComponent<SceneChange>().SceneChangeProcess();
+            return;
+        }
+        //タイマー稼働
+        _gameOverTimer -= Time.deltaTime;
+    }
     /// <summary>
     /// ステートの処理
     /// </summary>
@@ -23,7 +43,8 @@ public class PlayerRiskState : MonoBehaviour
             //UI
             _stateUI.GetComponent<PlayerStateUI>().SetDanderLevel();
             //ゲームオーバー
-            _isGameOver = true;
+            _isDanger = true;
+            _gameOverTimer = MAX_GAMEOVER_TIMER;
             return;
         }
         //数値が8以下
@@ -64,6 +85,7 @@ public class PlayerRiskState : MonoBehaviour
     /// <param name="flag">true = 加算,false = 減算</param>
     public void SetPlayerRiskPoint(int point,bool flag)
     {
+
         switch(flag)
         {
             case true:
@@ -74,6 +96,12 @@ public class PlayerRiskState : MonoBehaviour
                 }
                 break;
             case false:
+                //減算する前にに危険度がMaxだった場合
+                if(_isDanger)
+                {
+                    _isDanger = false;
+
+                }
                 //flagがfalseの場合は減算
                 _playerRiskPoint -= point;
                 if (_playerRiskPoint < 0)
@@ -99,6 +127,6 @@ public class PlayerRiskState : MonoBehaviour
     /// <returns></returns>
     public bool GetIsGameOver()
     {
-        return _isGameOver;
+        return _isDanger;
     }
 }
