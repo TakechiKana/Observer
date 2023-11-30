@@ -17,16 +17,16 @@ public class PlayerRiskState : MonoBehaviour
 
     private void Update()
     {
-        //危険度がMAX出ないとき
+        //危険度がMAXでないか、ゲームオーバータイマーが0になった時とき
         if(!_isDanger)
         {
             //処理しない
             return;
         }
         //ゲームオーバータイマーが0になったら
-        if(_gameOverTimer <= 0)
+        if(_gameOverTimer <= 0f)
         {
-            this.GetComponent<SceneChange>().SceneChangeProcess();
+            this.GetComponent<SceneChange>().SceneChangeProcess("GameOver");
             return;
         }
         //タイマー稼働
@@ -125,7 +125,7 @@ public class PlayerRiskState : MonoBehaviour
     /// ゲームオーバーの取得
     /// </summary>
     /// <returns></returns>
-    public bool GetIsGameOver()
+    public bool GetIsDanger()
     {
         return _isDanger;
     }

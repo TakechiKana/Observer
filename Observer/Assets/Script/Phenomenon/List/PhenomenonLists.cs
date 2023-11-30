@@ -63,6 +63,11 @@ public class PhenomenonLists : MonoBehaviour
             //処理しない
             return;
         }
+        //危険フラグが立っているときは処理しない
+        if(_gameRule.GetComponent<PlayerRiskState>().GetIsDanger())
+        {
+            return;
+        }
         //異常発生用タイマーのカウントダウン
         timer -= Time.deltaTime;
         if (/*デバッグ用*/Input.GetKeyDown(KeyCode.Space) || timer < 0)
@@ -132,6 +137,7 @@ public class PhenomenonLists : MonoBehaviour
             return;
         }
         ///
+
 
 
         //乱数の生成

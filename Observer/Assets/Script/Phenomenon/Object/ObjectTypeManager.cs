@@ -14,7 +14,33 @@ public class ObjectTypeManager : MonoBehaviour
     [Header("危険度")]
     [SerializeField]
     private int _riskValue = 1;
-    
+    //異常現象リストがアタッチされたゲームオブジェクト
+    private GameObject _phenomenonList = default;
+
+
+    private void Start()
+    {
+        //PhenomenonObjectsManagerオブジェクトを検索
+        _phenomenonList = GameObject.Find("PhenomenonObjectsManager");
+        //異常現象生成用のリストに追加
+        _phenomenonList.GetComponent<PhenomenonLists>().AddAbleToCreateList(this.gameObject);
+
+        //オブジェクトタイプがMove、Doorのとき
+        if (objectType == Phenomenon.ObjectType.Move || objectType == Phenomenon.ObjectType.Door)
+        {
+            //Moveコンポーネントを追加する
+            this.gameObject.AddComponent<Move>();
+            return;
+        }
+        //オブジェクトタイプがAddのとき
+        if (objectType == Phenomenon.ObjectType.AddObject)
+        {
+            //非アクティブにする
+            this.gameObject.SetActive(false);
+            return;
+        }
+    }
+
     /// <summary>
     /// 異常現象の発生地(部屋)の取得
     /// </summary>

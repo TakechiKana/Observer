@@ -32,6 +32,11 @@ public class GameTime : MonoBehaviour
             //処理しない
             return;
         }
+        //6時になったら
+        if(_gameTimeHour >= 6)
+        {
+            this.GetComponent<SceneChange>().SceneChangeProcess();
+        }
 
         //ゲームタイマーを進める
         _gameTimeMinute += Time.deltaTime;

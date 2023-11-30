@@ -6,17 +6,14 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     public string SceneName;    // 遷移先のシーン名
-    //void Update()
-    //{
-    //    // スペースキーが押されたらシーンを切り替える
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        SceneManager.LoadScene(SceneName);
-    //    }
-    //}
 
-    public void SceneChangeProcess()
+    public void SceneChangeProcess(string sName = null)
     {
+        if(sName != null)
+        {
+            SceneManager.LoadScene(sName);
+            return;
+        }
         SceneManager.LoadScene(SceneName);
     }
 }

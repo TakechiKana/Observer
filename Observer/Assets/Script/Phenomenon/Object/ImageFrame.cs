@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Image_frame : MonoBehaviour
+public class ImageFrame : MonoBehaviour
 {
     //変更後テクスチャ
     [SerializeField] Texture changeTex = default;
