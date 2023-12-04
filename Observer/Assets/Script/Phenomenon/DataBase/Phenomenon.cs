@@ -29,7 +29,9 @@ public class Phenomenon : ScriptableObject
         Move,               //オブジェクトの移動
         Door,               //ドアの開閉
         Image,              //画像変化
-        Ghost               //怪異
+        Ghost,              //怪異
+        Camera,             //カメラ
+        Blood               //血痕
     }
 
     //部屋タイプ

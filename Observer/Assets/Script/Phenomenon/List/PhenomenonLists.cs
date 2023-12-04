@@ -16,6 +16,8 @@ public class PhenomenonLists : MonoBehaviour
     private int allPhenomenonCount = 0;
     //プレイヤーステート、ゲームタイムがアタッチされたオブジェクト
     private GameObject _gameRule = default;
+    //カメラマネージャー
+    private GameObject _cameraManager = default;
     [Header("レポート後テキスト")]
     [SerializeField] GameObject _afterReportText = default;
     [Header("レポート成功画面")]
@@ -27,17 +29,10 @@ public class PhenomenonLists : MonoBehaviour
     /// </summary>
     void Start()
     {
-        ////異常現象生成用のリスト作成
-        //for (int i = 0; i < this.transform.childCount; i++)
-        //{
-        //    //listにゲームオブジェクトを格納していく
-        //    ableToCreateList.Add(this.transform.GetChild(i).gameObject);
-        //}
-        ////全体数格納
-        //allPhenomenonCount = ableToCreateList.Count;
-
         //ゲームルールオブジェクトの取得
         _gameRule = GameObject.Find("GameRule");
+        //カメラマネージャーオブジェクトの取得
+        _cameraManager = GameObject.Find("CameraManager");
     }
 
     /// <summary>
@@ -128,24 +123,20 @@ public class PhenomenonLists : MonoBehaviour
     /// </summary>
     private void MakePhenomenon()
     {
-        ///
-        ///デバッグ
-        ///
-        if(ableToCreateList.Count<=0)
-        {
-            Debug.Log("発生可能なオブジェクトなし");
-            return;
-        }
-        ///
-
-
-
         //乱数の生成
         int rand = Random.Range(0, ableToCreateList.Count);
 
 
         //変数にオブジェクトを格納する
         GameObject gameObj = ableToCreateList[rand];
+        //異常が今見ているカメラの部屋で発生したら
+        if ((int)gameObj.GetComponent<ObjectTypeManager>().GetRooms() 
+            == _cameraManager.GetComponent<CameraManager>().GetCamerNo())
+        {
+            //カメラ切替フラグを設定してノイズを発生させる
+            _cameraManager.GetComponent<CameraManager>().SetCameraSwitchFlag();
+        }
+
 
         //プレイヤーの危険度を設定(加算)する。
         _gameRule.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(),true);

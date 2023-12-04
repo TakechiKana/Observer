@@ -25,20 +25,32 @@ public class ObjectTypeManager : MonoBehaviour
         //異常現象生成用のリストに追加
         _phenomenonList.GetComponent<PhenomenonLists>().AddAbleToCreateList(this.gameObject);
 
-        //オブジェクトタイプがMove、Doorのとき
-        if (objectType == Phenomenon.ObjectType.Move || objectType == Phenomenon.ObjectType.Door)
+        //Moveスクリプトをアタッチするオブジェクトのとき
+        if (GetAttachmentMoveScriptObject())
         {
             //Moveコンポーネントを追加する
             this.gameObject.AddComponent<Move>();
-            return;
         }
-        //オブジェクトタイプがAddのとき
-        if (objectType == Phenomenon.ObjectType.AddObject)
+        //非アクティブにするオブジェクトの時
+        if (GetHiddenObject())
         {
             //非アクティブにする
             this.gameObject.SetActive(false);
-            return;
         }
+    }
+    /// <summary>
+    /// Moveスクリプトをアタッチするオブジェクト
+    /// </summary>
+    /// <returns></returns>
+    bool GetAttachmentMoveScriptObject()
+    {
+        //Move,Door,Camera
+        return objectType == Phenomenon.ObjectType.Move || objectType == Phenomenon.ObjectType.Door || objectType == Phenomenon.ObjectType.Camera;
+    }
+
+    bool GetHiddenObject()
+    {
+        return objectType == Phenomenon.ObjectType.AddObject || objectType == Phenomenon.ObjectType.Blood || objectType == Phenomenon.ObjectType.Camera;
     }
 
     /// <summary>

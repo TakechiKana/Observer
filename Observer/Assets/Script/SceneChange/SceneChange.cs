@@ -9,11 +9,12 @@ public class SceneChange : MonoBehaviour
 
     public void SceneChangeProcess(string sName = null)
     {
-        if(sName != null)
+        if(sName == null 
+            || sName == "0")
         {
-            SceneManager.LoadScene(sName);
+            SceneManager.LoadScene(SceneName);
             return;
         }
-        SceneManager.LoadScene(SceneName);
+    SceneManager.LoadScene(sName);
     }
 }
