@@ -93,7 +93,7 @@ public class CameraManager : MonoBehaviour
     public void SwitchCamera()
     {
         //ノイズを発生させる
-        _cameraSwitchFlag = true;
+        //_cameraSwitchFlag = true;
 
         switch (_cameraNo)
         {
@@ -138,6 +138,7 @@ public class CameraManager : MonoBehaviour
             //カメラ番号を3にする
             _cameraNo = MAX_CAMERA_NO;
         }
+        SetCameraSwitchFlag();
         //カメラの切り替え
         SwitchCamera();
     }
@@ -158,6 +159,7 @@ public class CameraManager : MonoBehaviour
             //カメラ番号を0にする
             _cameraNo = 1;
         }
+        SetCameraSwitchFlag();
         //カメラの切り替え
         SwitchCamera();
     }

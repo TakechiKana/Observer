@@ -64,7 +64,7 @@ public class PhenomenonLists : MonoBehaviour
             return;
         }
         //異常発生用タイマーのカウントダウン
-        timer -= Time.deltaTime;
+        //timer -= Time.deltaTime;
         if (/*デバッグ用*/Input.GetKeyDown(KeyCode.Space) || timer < 0)
         {
             //異常現象発生
@@ -116,6 +116,41 @@ public class PhenomenonLists : MonoBehaviour
         //負を返す
         return false;
     }
+    /// <summary>
+    /// 同じ部屋で既にその現象が起きていないか判別する
+    /// </summary>
+    /// <param name="i"></param>
+    private bool SearchSamePhenomenon(int i)
+    {
+        bool camera = false;
+        bool type = false;
+        for(int a = 0; a < alreadyCreateList.Count; a++)
+        {
+            //部屋(カメラ)を比べる
+            if(ableToCreateList[i].GetComponent<ObjectTypeManager>().GetRooms()
+                == alreadyCreateList[a].GetComponent<ObjectTypeManager>().GetRooms())
+            {
+                camera = true;
+            }
+            //オブジェクトタイプを比べる
+            if(ableToCreateList[i].GetComponent<ObjectTypeManager>().GetObjectType()
+                == alreadyCreateList[a].GetComponent<ObjectTypeManager>().GetObjectType())
+            {
+                type = true;
+            }
+            //両方同じであれば
+            if(camera == true && type == true)
+            {
+                //trueを返す
+                return true;
+            }
+            //リセット
+            camera = false;
+            type = false;
+        }
+        //当てはまるものがなければfalseを返す
+        return false;
+    }
 
 
     /// <summary>
@@ -123,9 +158,23 @@ public class PhenomenonLists : MonoBehaviour
     /// </summary>
     private void MakePhenomenon()
     {
-        //乱数の生成
-        int rand = Random.Range(0, ableToCreateList.Count);
+        //検索用
+        bool flag = default;
+        //乱数用
+        int rand = default;
 
+        do
+        {
+            //乱数の生成
+            rand = Random.Range(0, ableToCreateList.Count);
+            //同じ部屋で同じタイプの現象が起きていないか検索する
+            flag = SearchSamePhenomenon(rand);
+
+            if (flag)
+                Debug.Log("やり直し");
+        }
+        //同じものがあればやり直し
+        while (flag);
 
         //変数にオブジェクトを格納する
         GameObject gameObj = ableToCreateList[rand];
@@ -149,6 +198,11 @@ public class PhenomenonLists : MonoBehaviour
         alreadyCreateList.Add(ableToCreateList[rand]);
         //未発生現象リストから削除する
         ableToCreateList.RemoveAt(rand);
+
+        //if(gameObj.GetComponent<ObjectTypeManager>().GetObjectType() == Phenomenon.ObjectType.Camera)
+        //{
+        //    _cameraManager.GetComponent<CameraManager>().SwitchCamera();
+        //}
 
         //オブジェクトが非アクティブの場合
         if(!gameObj.activeSelf)
@@ -221,7 +275,14 @@ public class PhenomenonLists : MonoBehaviour
     {
         //プレイヤーの危険度を設定(減算)する。
         _gameRule.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(), false);
-        //オブジェクトが非アクティブの場合
+        //オブジェクトタイプがカメラの場合
+        if(gameObj.GetComponent<ObjectTypeManager>().GetObjectType() == Phenomenon.ObjectType.Camera)
+        {
+            //現象発生フラグを消す
+            gameObj.GetComponent<ObjectTypeManager>().SetIsOutbreakOff();
+            return;
+        }
+        //オブジェクトが非アクティブでカメラでないの場合
         if (!gameObj.activeSelf)
         {
             //アクティブにする

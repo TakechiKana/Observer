@@ -109,7 +109,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OffsetTime: 70
+    - _OffsetTime: 20
     - _Parallax: 0.005
     - _QueueOffset: 42
     - _ReceiveShadows: 1

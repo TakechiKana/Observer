@@ -24,7 +24,12 @@ public class ObjectTypeManager : MonoBehaviour
         _phenomenonList = GameObject.Find("PhenomenonObjectsManager");
         //異常現象生成用のリストに追加
         _phenomenonList.GetComponent<PhenomenonLists>().AddAbleToCreateList(this.gameObject);
-
+        //カメラオブジェクトのとき
+        if (objectType == Phenomenon.ObjectType.Camera)
+        {
+            //Moveコンポーネントを追加する
+            this.gameObject.AddComponent<CameraMove>();
+        }
         //Moveスクリプトをアタッチするオブジェクトのとき
         if (GetAttachmentMoveScriptObject())
         {
@@ -45,12 +50,15 @@ public class ObjectTypeManager : MonoBehaviour
     bool GetAttachmentMoveScriptObject()
     {
         //Move,Door,Camera
-        return objectType == Phenomenon.ObjectType.Move || objectType == Phenomenon.ObjectType.Door || objectType == Phenomenon.ObjectType.Camera;
+        return objectType == Phenomenon.ObjectType.Move || objectType == Phenomenon.ObjectType.Door;
     }
 
     bool GetHiddenObject()
     {
-        return objectType == Phenomenon.ObjectType.AddObject || objectType == Phenomenon.ObjectType.Blood || objectType == Phenomenon.ObjectType.Camera;
+        return objectType == Phenomenon.ObjectType.AddObject || 
+            objectType == Phenomenon.ObjectType.Blood || 
+            objectType == Phenomenon.ObjectType.Camera || 
+            objectType == Phenomenon.ObjectType.Ghost;
     }
 
     /// <summary>
