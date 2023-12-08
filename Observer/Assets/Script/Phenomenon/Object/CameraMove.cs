@@ -45,7 +45,7 @@ public class CameraMove : MonoBehaviour
                 //移動フラグを消す
                 isMove = false;
                 //カメラの修正
-                _cameraManager.GetComponent<CameraManager>().SwitchCamera();
+                _cameraManager.GetComponent<CameraManager>().CameraUpdate();
                 this.gameObject.SetActive(false);
             }
             return;
@@ -59,7 +59,7 @@ public class CameraMove : MonoBehaviour
         this.transform.position = movePos;
         this.transform.rotation = moveRot;
         //カメラの修正
-        _cameraManager.GetComponent<CameraManager>().SwitchCamera();
+        _cameraManager.GetComponent<CameraManager>().CameraUpdate();
         //移動フラグを立てる
         isMove = true;
     }

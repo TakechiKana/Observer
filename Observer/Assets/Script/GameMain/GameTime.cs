@@ -6,9 +6,9 @@ using TMPro;
 public class GameTime : MonoBehaviour
 {
     //ゲームタイマー
-    private float _gameTimeMinute = 0.0f;
+    static private float _gameTimeMinute = 0.0f;
     //ゲームタイマー(時間)
-    private int _gameTimeHour = 0;
+    static private int _gameTimeHour = 0;
     //ゲームタイマーフラグ
     private bool _gameTimeFlag = true;
     //ゲームタイマー表示テキスト(時間)
@@ -20,8 +20,12 @@ public class GameTime : MonoBehaviour
     private TextMeshProUGUI _gameTimeMinuteText = default;
     void Start()
     {
+        //テキスト初期化
         _gameTimeHourText.text = "00";
         _gameTimeMinuteText.text = "00";
+        //タイマー初期化
+        _gameTimeHour = 0;
+        _gameTimeMinute = 0.0f;
     }
 
     void Update()
@@ -69,5 +73,14 @@ public class GameTime : MonoBehaviour
     public bool GetGameTimeFlag()
     {
         return _gameTimeFlag;
+    }
+
+    static public float GetMinute()
+    {
+        return _gameTimeMinute;
+    }
+    static public int GetHour()
+    {
+        return _gameTimeHour;
     }
 }

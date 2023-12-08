@@ -12,10 +12,10 @@ public class PhenomenonLists : MonoBehaviour
     [SerializeField] private float timer = 15.0f;
     //タイマー再設定定数
     private const float TIMER_MAX = 10.0f;
-    //オブジェクトカウント全体数
-    private int allPhenomenonCount = 0;
     //プレイヤーステート、ゲームタイムがアタッチされたオブジェクト
     private GameObject _gameRule = default;
+    //プレイヤーステート、ゲームタイムがアタッチされたオブジェクト
+    static private int _reportedPhenomenonCount = default;
     //カメラマネージャー
     private GameObject _cameraManager = default;
     [Header("レポート後テキスト")]
@@ -42,10 +42,26 @@ public class PhenomenonLists : MonoBehaviour
     public void AddAbleToCreateList(GameObject gameObj)
     {
         ableToCreateList.Add(gameObj);
-        allPhenomenonCount += 1;
 
     }
+    /// <summary>
+    /// リストのオブジェクトをシャッフルする。
+    /// </summary>
+    public void ShuffleListObject()
+    {
+        for (int i = 0; i < ableToCreateList.Count - 1; i++)
+        {
+            var j = Random.Range(0, ableToCreateList.Count); // ランダムで要素番号を１つ選ぶ（ランダム要素）
+            var temp = ableToCreateList[i]; // 一番最後の要素を仮確保（temp）にいれる
+            ableToCreateList[i] = ableToCreateList[j]; // ランダム要素を一番最後にいれる
+            ableToCreateList[j] = temp; // 仮確保を元ランダム要素に上書き
+        }
+    }
 
+    static public int GetReportedPhenomenonCount()
+    {
+        return _reportedPhenomenonCount;
+    }
 
     /// <summary>
     /// 更新処理
@@ -86,14 +102,8 @@ public class PhenomenonLists : MonoBehaviour
         Phenomenon.ObjectType phenoType = obj.GetComponent<ObjectTypeManager>().GetObjectType();
         //オブジェクトタイプが、通常時はアクティブであるオブジェクトだった場合
         //消失、ライト
-        if(phenoType == Phenomenon.ObjectType.Vanish
-            || phenoType == Phenomenon.ObjectType.Light)
-        {
-            //正を返す
-            return true;
-        }
-        //負を返す
-        return false;
+        return phenoType == Phenomenon.ObjectType.Vanish ||
+            phenoType == Phenomenon.ObjectType.Light;
     }
     
     
@@ -106,34 +116,29 @@ public class PhenomenonLists : MonoBehaviour
         //オブジェクトタイプを格納する。
         Phenomenon.ObjectType phenoType = obj.GetComponent<ObjectTypeManager>().GetObjectType();
         //オブジェクトタイプが、通常時非アクティブであるオブジェクトだった場合
-        //消失、ライト
-        if(phenoType == Phenomenon.ObjectType.AddObject
-            || phenoType == Phenomenon.ObjectType.Light)
-        {
-            //正を返す
-            return true;
-        }
-        //負を返す
-        return false;
+        //追加、ライト、ゴースト
+        return phenoType == Phenomenon.ObjectType.AddObject ||
+            phenoType == Phenomenon.ObjectType.Light ||
+            phenoType == Phenomenon.ObjectType.Ghost;
     }
     /// <summary>
     /// 同じ部屋で既にその現象が起きていないか判別する
     /// </summary>
-    /// <param name="i"></param>
-    private bool SearchSamePhenomenon(int i)
+    /// <param name="gameObj">異常オブジェクト</param>
+    private bool SearchSamePhenomenon(GameObject gameObj)
     {
         bool camera = false;
         bool type = false;
         for(int a = 0; a < alreadyCreateList.Count; a++)
         {
             //部屋(カメラ)を比べる
-            if(ableToCreateList[i].GetComponent<ObjectTypeManager>().GetRooms()
+            if(gameObj.GetComponent<ObjectTypeManager>().GetRooms()
                 == alreadyCreateList[a].GetComponent<ObjectTypeManager>().GetRooms())
             {
                 camera = true;
             }
             //オブジェクトタイプを比べる
-            if(ableToCreateList[i].GetComponent<ObjectTypeManager>().GetObjectType()
+            if(gameObj.GetComponent<ObjectTypeManager>().GetObjectType()
                 == alreadyCreateList[a].GetComponent<ObjectTypeManager>().GetObjectType())
             {
                 type = true;
@@ -165,25 +170,29 @@ public class PhenomenonLists : MonoBehaviour
 
         do
         {
-            //乱数の生成
-            rand = Random.Range(0, ableToCreateList.Count);
             //同じ部屋で同じタイプの現象が起きていないか検索する
-            flag = SearchSamePhenomenon(rand);
-
+            flag = SearchSamePhenomenon(ableToCreateList[0]);
+            //同じものがあったら
             if (flag)
+            {
                 Debug.Log("やり直し");
+                //オブジェクトを最後尾に格納
+                ableToCreateList.Add(ableToCreateList[0]);
+                //先頭オブジェクトを削除する。
+                ableToCreateList.RemoveAt(0);
+            }
         }
         //同じものがあればやり直し
         while (flag);
 
         //変数にオブジェクトを格納する
-        GameObject gameObj = ableToCreateList[rand];
+        GameObject gameObj = ableToCreateList[0];
         //異常が今見ているカメラの部屋で発生したら
         if ((int)gameObj.GetComponent<ObjectTypeManager>().GetRooms() 
-            == _cameraManager.GetComponent<CameraManager>().GetCamerNo())
+            == _cameraManager.GetComponent<CameraManager>().GetCameraNo())
         {
             //カメラ切替フラグを設定してノイズを発生させる
-            _cameraManager.GetComponent<CameraManager>().SetCameraSwitchFlag();
+            _cameraManager.GetComponent<CameraManager>().SetCameraNoiseFlag();
         }
 
 
@@ -198,11 +207,6 @@ public class PhenomenonLists : MonoBehaviour
         alreadyCreateList.Add(ableToCreateList[rand]);
         //未発生現象リストから削除する
         ableToCreateList.RemoveAt(rand);
-
-        //if(gameObj.GetComponent<ObjectTypeManager>().GetObjectType() == Phenomenon.ObjectType.Camera)
-        //{
-        //    _cameraManager.GetComponent<CameraManager>().SwitchCamera();
-        //}
 
         //オブジェクトが非アクティブの場合
         if(!gameObj.activeSelf)
@@ -275,13 +279,6 @@ public class PhenomenonLists : MonoBehaviour
     {
         //プレイヤーの危険度を設定(減算)する。
         _gameRule.GetComponent<PlayerRiskState>().SetPlayerRiskPoint(gameObj.GetComponent<ObjectTypeManager>().GetRiskValue(), false);
-        //オブジェクトタイプがカメラの場合
-        if(gameObj.GetComponent<ObjectTypeManager>().GetObjectType() == Phenomenon.ObjectType.Camera)
-        {
-            //現象発生フラグを消す
-            gameObj.GetComponent<ObjectTypeManager>().SetIsOutbreakOff();
-            return;
-        }
         //オブジェクトが非アクティブでカメラでないの場合
         if (!gameObj.activeSelf)
         {
@@ -301,15 +298,5 @@ public class PhenomenonLists : MonoBehaviour
         //現象発生フラグを消す
         gameObj.GetComponent<ObjectTypeManager>().SetIsOutbreakOff();
         return;
-    }
-
-    /// <summary>
-    /// デバッグ用関数
-    /// </summary>
-    void DebugMethod()
-    {
-        Debug.Log(ableToCreateList.Count);
-        Debug.Log(alreadyCreateList.Count);
-        Debug.Log(allPhenomenonCount);
     }
 }

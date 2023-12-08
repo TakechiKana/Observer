@@ -15,7 +15,7 @@ public class CameraManager : MonoBehaviour
     [Header("ポストエフェクトマテリアル")]
     private Material _postProcessMat;                                                  //ポストエフェクトマテリアル
     private readonly int _noiseTimerID = Shader.PropertyToID("_NoiseTimer");    // シェーダープロパティのReference名
-    private bool _cameraSwitchFlag = false;                                      //カメラ切替フラグ
+    private bool _cameraNoiseFlag = false;                                      //カメラ切替フラグ
     private const float CONST_NOISETIMER = 0.1f;                                //ノイズタイマー用定数
     private float _noiseTimer = default;                                         //ノイズタイマー用変数
     [SerializeField][Header("カメラ番号テキストオブジェクト")]
@@ -39,7 +39,7 @@ public class CameraManager : MonoBehaviour
     private void Update()
     {
         //カメラ切替フラグがオフ
-        if (!_cameraSwitchFlag)
+        if (!_cameraNoiseFlag)
         {
             return;
         }
@@ -90,11 +90,8 @@ public class CameraManager : MonoBehaviour
         _cameraNoText.text = "Camera5";
     }
 
-    public void SwitchCamera()
+    public void CameraUpdate()
     {
-        //ノイズを発生させる
-        //_cameraSwitchFlag = true;
-
         switch (_cameraNo)
         {
             case 1:
@@ -119,14 +116,14 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    private bool GetSwitchCameraFlag()
+    private bool GetCameraNoiseFlag()
     {
-        return _cameraSwitchFlag;
+        return _cameraNoiseFlag;
     }
 
     public void ClickButtonL()
     {
-        if (GetSwitchCameraFlag())
+        if (GetCameraNoiseFlag())
         {
             return;
         }
@@ -138,16 +135,16 @@ public class CameraManager : MonoBehaviour
             //カメラ番号を3にする
             _cameraNo = MAX_CAMERA_NO;
         }
-        SetCameraSwitchFlag();
+        SetCameraNoiseFlag();
         //カメラの切り替え
-        SwitchCamera();
+        CameraUpdate();
     }
     /// <summary>
     /// 右ボタンがクリックされたら
     /// </summary>
     public void ClickButtonR()
     {
-        if (GetSwitchCameraFlag())
+        if (GetCameraNoiseFlag())
         {
             return;
         }
@@ -159,9 +156,9 @@ public class CameraManager : MonoBehaviour
             //カメラ番号を0にする
             _cameraNo = 1;
         }
-        SetCameraSwitchFlag();
+        SetCameraNoiseFlag();
         //カメラの切り替え
-        SwitchCamera();
+        CameraUpdate();
     }
 
     void CameraNoiseProcess()
@@ -174,28 +171,28 @@ public class CameraManager : MonoBehaviour
         {
             //0を渡す。
             _postProcessMat.SetFloat(_noiseTimerID, 0.0f);
-            _cameraSwitchFlag = false;
+            _cameraNoiseFlag = false;
             _noiseTimer = CONST_NOISETIMER;
         }
     }
     /// <summary>
     /// カメラ切替フラグの設定
     /// </summary>
-    public void SetCameraSwitchFlag()
+    public void SetCameraNoiseFlag()
     {
-        _cameraSwitchFlag = true;
+        _cameraNoiseFlag = true;
     }
     /// <summary>
     /// カメラ切替フラグの設定
     /// </summary>
     public bool GetCameraSwitchFlag()
     {
-        return _cameraSwitchFlag;
+        return _cameraNoiseFlag;
     }
     /// <summary>
     /// カメラ番号の取得
     /// </summary>
-    public int GetCamerNo()
+    public int GetCameraNo()
     {
         return _cameraNo;
     }
