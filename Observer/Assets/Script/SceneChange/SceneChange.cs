@@ -5,16 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
-    public string SceneName;    // ‘JˆÚæ‚ÌƒV[ƒ“–¼
-
-    public void SceneChangeProcess(string sName = null)
+    public void SceneChangeProcess(string sName)
     {
-        if(sName == null 
-            || sName == "0")
-        {
-            SceneManager.LoadScene(SceneName);
-            return;
-        }
-    SceneManager.LoadScene(sName);
+        SceneManager.LoadScene(sName);
     }
 }

@@ -313,51 +313,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &124581158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 124581160}
-  - component: {fileID: 124581159}
-  m_Layer: 0
-  m_Name: SceneChangeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &124581159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 124581158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cbb06d9e54f81646bd23988c5c7fc81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SceneName: Hospital
---- !u!4 &124581160
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 124581158}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 431.2353, y: 235.42879, z: -0.45646667}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &283362717
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +775,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 824721113}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &830543151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 830543153}
+  - component: {fileID: 830543152}
+  m_Layer: 0
+  m_Name: TitleStart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &830543152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830543151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0df3839f7b1aa45b1a922fbebaeaf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _postProcess: {fileID: -876546973899608171, guid: 1eaa08813a2c0b44dbcb9614cc7d2182, type: 3}
+--- !u!4 &830543153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830543151}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 642.2949, y: 212.80734, z: 298.5548}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1015622170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1390,6 +1390,7 @@ GameObject:
   - component: {fileID: 1834336782}
   - component: {fileID: 1834336781}
   - component: {fileID: 1834336780}
+  - component: {fileID: 1834336783}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -1461,7 +1462,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 124581159}
+      - m_Target: {fileID: 1834336783}
         m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
         m_MethodName: SceneChangeProcess
         m_Mode: 5
@@ -1470,7 +1471,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 0
+          m_StringArgument: Hospital
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1834336781
@@ -1511,6 +1512,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1834336778}
   m_CullTransparentMesh: 1
+--- !u!114 &1834336783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834336778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cbb06d9e54f81646bd23988c5c7fc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2035694171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1778,7 +1791,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1387339213}
   - {fileID: 283362720}
-  - {fileID: 124581160}
   - {fileID: 1807067028}
   - {fileID: 400273110}
   - {fileID: 26087148}
+  - {fileID: 830543153}

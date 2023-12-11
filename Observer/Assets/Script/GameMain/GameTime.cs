@@ -30,6 +30,10 @@ public class GameTime : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            _gameTimeHour += 1;
+        }
         //ゲームタイマーフラグがfalseになったら
         if(!_gameTimeFlag)
         { 
@@ -39,7 +43,7 @@ public class GameTime : MonoBehaviour
         //6時になったら
         if(_gameTimeHour >= 6)
         {
-            this.GetComponent<SceneChange>().SceneChangeProcess();
+            this.GetComponent<SceneChange>().SceneChangeProcess("GameClear");
         }
 
         //ゲームタイマーを進める

@@ -19,4 +19,10 @@ public class SwichPostProcessing : MonoBehaviour
         _postProcess.SetFloat("_DoPostProcess", 0f);
 
     }
+    public void ONPostProcess()
+    {
+        //ƒIƒ“‚É‚·‚é
+        _postProcess.SetFloat("_DoPostProcess", 1f);
+
+    }
 }
