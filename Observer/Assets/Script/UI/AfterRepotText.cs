@@ -16,7 +16,7 @@ public class AfterRepotText : MonoBehaviour
         //タイマーを減算
         _displayTimer -= Time.deltaTime;
         //タイマーが0以下になったら
-        if(_displayTimer <= 0.0f)
+        if(_displayTimer <= 0.0f || Input.GetMouseButtonDown(0))
         {
             //タイマーリセット
             _displayTimer = 0.0f;

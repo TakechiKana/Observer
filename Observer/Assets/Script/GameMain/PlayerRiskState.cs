@@ -10,15 +10,19 @@ public class PlayerRiskState : MonoBehaviour
     private const int PLAYER_RISK_MIDDLE =4;    //危険度Middle
     private const int PLAYER_RISK_LOW = 1;       //危険度Low
     private bool _isDanger = false;               //危険度MAXフラグ
+    private bool _isGameOver = false;               //ゲームオーバーフラグ
     [SerializeField] private float _gameOverTimer = 0.0f;        //ゲームオーバーまでの制限時間
     private float MAX_GAMEOVER_TIMER = 10.0f;        //ゲームオーバーまでの制限時間
     [Header("ステート用UI")]
     [SerializeField] private GameObject _stateUI = default;
+    [Header("ステート用UI")]
+    [SerializeField] private Material _postProcess = default;
+    private readonly int _noiseTimerID = Shader.PropertyToID("_NoiseTimer");    // シェーダープロパティのReference名
 
     private void Update()
     {
-        //危険度がMAXでないか、ゲームオーバータイマーが0になった時とき
-        if(!_isDanger)
+        //危険度がMAXでないか、ゲームオーバーでない時とき
+        if(!_isDanger　|| _isGameOver)
         {
             //処理しない
             return;
@@ -26,7 +30,8 @@ public class PlayerRiskState : MonoBehaviour
         //ゲームオーバータイマーが0になったら
         if(_gameOverTimer <= 0f)
         {
-            this.GetComponent<SceneChange>().SceneChangeProcess("GameOver");
+            StartCoroutine("GameOverProcess");
+            _isGameOver = true;
             return;
         }
         //タイマー稼働
@@ -79,7 +84,7 @@ public class PlayerRiskState : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// 危険度の設定
     /// </summary>
     /// <param name="point">危険数値</param>
     /// <param name="flag">true = 加算,false = 減算</param>
@@ -113,6 +118,18 @@ public class PlayerRiskState : MonoBehaviour
         PlayerStateManager();
         //デバッグ　
         Debug.Log($"危険度{_playerRiskPoint}");
+    }
+    /// <summary>
+    /// ゲームオーバー処理
+    /// </summary>
+    IEnumerator GameOverProcess()
+    {
+        _postProcess.SetFloat(_noiseTimerID, 1.0f);
+        yield return new WaitForSeconds(1.0f);
+        this.GetComponent<SceneChange>().SceneChangeProcess("GameOver");
+        yield return new WaitForSeconds(0.5f);
+        _postProcess.SetFloat(_noiseTimerID, 0f);
+        yield break;
     }
     /// <summary>
     /// 危険度の取得。

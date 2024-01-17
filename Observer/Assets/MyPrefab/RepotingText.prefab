@@ -147,3 +147,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774f4f3a24a9094499b290e57239729d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _repotManager: {fileID: 0}
+  _displayText: Reporting

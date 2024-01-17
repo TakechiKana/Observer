@@ -29,12 +29,19 @@ public class PhenomenonLists : MonoBehaviour
     [Header("レポート成功画面")]
     [SerializeField] GameObject _reportSuccessScreen = default;
 
+    //デバッグフラグ
+    private bool _isDebug = false;
+    //フラグマネージャ
+    private GameObject _flagManager = default;
+
 
     /// <summary>
     /// 初期化処理
     /// </summary>
     void Start()
     {
+        Invoke("FindFlagObject", 0.09f);    //少し待ってからフラグマネジャを検索する
+
         //ゲームルールオブジェクトの取得
         _gameRule = GameObject.Find("GameRule");
         //カメラマネージャーオブジェクトの取得
@@ -45,6 +52,16 @@ public class PhenomenonLists : MonoBehaviour
         _alreadyPhenomenonCount = 0;
         //タイマーの初期化
         _timer = TIMER_START;
+    }
+
+    void FindFlagObject()
+    {
+        _flagManager = GameObject.FindGameObjectWithTag("FlagManager");//フラグマネジャをみつける
+        if (_flagManager == null)
+        {
+            return;
+        }
+        _isDebug = _flagManager.GetComponent<FlagManager>().GetIsDebug();
     }
 
     /// <summary>
@@ -102,7 +119,7 @@ public class PhenomenonLists : MonoBehaviour
         }
         //異常発生用タイマーのカウントダウン
         _timer -= Time.deltaTime;
-        if (/*デバッグ用*/Input.GetKeyDown(KeyCode.Space) || _timer < 0)
+        if ((_isDebug && Input.GetKeyDown(KeyCode.Space)) ||_timer < 0)
         {
             //異常現象発生
             MakePhenomenon();

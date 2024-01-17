@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 4cbb06d9e54f81646bd23988c5c7fc81
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _postProcessMat: {fileID: -876546973899608171, guid: 1eaa08813a2c0b44dbcb9614cc7d2182, type: 3}
+  - fadeCanvas: {fileID: 2599647640220541739, guid: 38e6d6381aeb44e41a5ad34a478338f1, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -15,9 +15,9 @@ public class CameraManager : MonoBehaviour
     [Header("ポストエフェクトマテリアル")]
     private Material _postProcessMat;                                                  //ポストエフェクトマテリアル
     private readonly int _noiseTimerID = Shader.PropertyToID("_NoiseTimer");    // シェーダープロパティのReference名
-    private bool _cameraNoiseFlag = false;                                      //カメラ切替フラグ
     private const float CONST_NOISETIMER = 0.1f;                                //ノイズタイマー用定数
     private float _noiseTimer = default;                                         //ノイズタイマー用変数
+    private bool _cameraNoiseFlag = false;                                      //カメラ切替フラグ
     [SerializeField][Header("カメラ番号テキストオブジェクト")]
     private TextMeshProUGUI _cameraNoText = default;                             //カメラ番号のテキストオブジェクト
     //カメラ番号
