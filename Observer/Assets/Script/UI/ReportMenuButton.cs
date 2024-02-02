@@ -6,10 +6,10 @@ public class ReportMenuButton : MonoBehaviour
 {
     //レポート画面UI
     [Header("レポート画面オブジェクト")]
-    public GameObject _reportScreen = default;
-    //レポート画面UIAnimation
-    //[Header("レポート画面オブジェクトOpenAnimation")]
-    //public Animator reportScreenAnim = default;
+    [SerializeField]
+    private GameObject _reportScreen = default;
+    [Header("ボタンクリック音")]
+    [SerializeField] private AudioClip _audioClip = default;
 
     private void Start()
     {
@@ -20,5 +20,6 @@ public class ReportMenuButton : MonoBehaviour
     {
         //表示or非表示にする
         _reportScreen.SetActive(!_reportScreen.activeSelf);
+        this.GetComponent<AudioSource>().PlayOneShot(_audioClip);
     }
 }

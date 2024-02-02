@@ -23,24 +23,21 @@ public class ReportProcess : MonoBehaviour
     [SerializeField] private GameObject selectedCamera = default;
     [Header("タイプの選択中アイコン")]
     [SerializeField] private GameObject selectedType = default;
-
-    private void Start()
-    {
-        ////カメラセレクトオブジェクトを検索する
-        //selectedCamera = GameObject.Find("SelectedCamera");
-        //selectedCamera.SetActive(false);
-        ////セレクトオブジェクトを検索する
-        //selectedType = GameObject.Find("SelectedType");
-        //selectedType.SetActive(false);
-    }
-
+    //[Header("選択音")] 
+    //[SerializeField] private AudioClip _audioClip1 = default;
+    [Header("送信失敗音")]
+    [SerializeField] private AudioClip _audioClip2 = default;
+    [Header("送信成功音")]
+    [SerializeField] private AudioClip _audioClip3 = default;
     public void ReportSend()
     {
         //どちらか片方でも空になっているとき
         if(objectType == default || room == default)
         {
             //報告できない場合、エラーメッセージを表示する。
-            _errorMessageObj.SetActive(true);           
+            _errorMessageObj.SetActive(true);
+            //エラー音
+            this.GetComponent<AudioSource>().PlayOneShot(_audioClip2);
             return;
         }
 
@@ -50,16 +47,13 @@ public class ReportProcess : MonoBehaviour
             //非表示
             _errorMessageObj.SetActive(false);
         }
+        //選択音
+        this.GetComponent<AudioSource>().PlayOneShot(_audioClip3);
         //レポートスクリーンとメニュボタンを非表示
         _reportMenu.SetActive(false);
         _reportScreen.SetActive(false);
         //レポート中エフェクトを表示
         _repotingMessageObj.SetActive(true);
-
-        ////レポートが正しいか判定する
-        //phenomenonList.GetComponent<PhenomenonLists>().JudgeReport(room,objectType);
-        ////内容をリセット
-        //ReportCansel();
     }
     public void ReportJudge()
     {
@@ -67,9 +61,6 @@ public class ReportProcess : MonoBehaviour
         phenomenonList.GetComponent<PhenomenonLists>().JudgeReport(room, objectType);
         //メニューボタンを表示
         _reportMenu.SetActive(true);
-
-        //デバッグ
-        //Debug.Log("送信成功");
         //内容をリセット
         ReportCansel();
     }
@@ -86,7 +77,6 @@ public class ReportProcess : MonoBehaviour
         //選択中エフェクトを非表示
         selectedCamera.SetActive(false);
         selectedType.SetActive(false);
-
     }
     /// <summary>
     /// 報告したいオブジェクトタイプを設定する
@@ -98,9 +88,6 @@ public class ReportProcess : MonoBehaviour
         //選択中エフェクトを表示
         selectedType.transform.position = pos;
         selectedType.SetActive(true);
-
-        //デバッグ
-        //Debug.Log($"Type Set! {objectType}");
     }
 
 
@@ -114,7 +101,5 @@ public class ReportProcess : MonoBehaviour
         //選択中エフェクトを表示
         selectedCamera.transform.position = pos;
         selectedCamera.SetActive(true);
-        //デバッグ
-        //Debug.Log($"Room Set! {room}");
     }
 }

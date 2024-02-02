@@ -8,6 +8,10 @@ public class TitleStart : MonoBehaviour
     [SerializeField] private GameObject _fadeScreen = default;
     [Header("フラグマネージャ")]
     [SerializeField] private GameObject _flagManager = default;
+    [Header("コンプリートモード")]
+    [SerializeField] private GameObject _completeModeButton = default;
+    [Header("未発見の異変テキスト")]
+    [SerializeField] private GameObject _stillAnomalyText = default;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +19,14 @@ public class TitleStart : MonoBehaviour
         Instantiate(_flagManager);
         //フェードスクリーン生成
         Instantiate(_fadeScreen);
+        if (_flagManager.GetComponent<FlagManager>().GetGameClear())
+        {
+            //_completeModeButton.SetActive(true);
+            _stillAnomalyText.SetActive(true);
+            return;
+        }
+        _completeModeButton.SetActive(false);
+        _stillAnomalyText.SetActive(false);
     }
 
     private void Update()

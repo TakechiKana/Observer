@@ -10,6 +10,7 @@ public class AfterRepotText : MonoBehaviour
     private const string SUCCESS_MESSAGE = "Anomary Fixed";     //レポート成功テキスト
     private const float MAX_TIMER = 2.0f;                       //ディスプレイタイマー上限値
     private float _displayTimer = 0f;                           //ディスプレイタイマー
+
     // Start is called before the first frame update
     private void Update()
     {

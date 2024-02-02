@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class PlayerRiskState : MonoBehaviour
 {
-    [SerializeField] private int _playerRiskPoint = 0;            //プレイヤーの危険度
+    //プレイヤーの危険度
+    [SerializeField] private int _playerRiskPoint = 0;            
     private const int PLAYER_RISK_MAX = 10;       //危険度の上限
     private const int PLAYER_RISK_HIGH = 7;      //危険度High
     private const int PLAYER_RISK_MIDDLE =4;    //危険度Middle
     private const int PLAYER_RISK_LOW = 1;       //危険度Low
-    private bool _isDanger = false;               //危険度MAXフラグ
-    private bool _isGameOver = false;               //ゲームオーバーフラグ
-    [SerializeField] private float _gameOverTimer = 0.0f;        //ゲームオーバーまでの制限時間
-    private float MAX_GAMEOVER_TIMER = 10.0f;        //ゲームオーバーまでの制限時間
+    private bool _isDanger = false;              //危険度MAXフラグ 
+    //ゲームオーバーフラグ
+    private bool _isGameOver = false;               
+    //ゲームオーバーまでの制限時間
+    [SerializeField] private float _gameOverTimer = 0.0f;       
+    //ゲームオーバーまでの制限時間
+    private float MAX_GAMEOVER_TIMER = 10.0f;        
     [Header("ステート用UI")]
     [SerializeField] private GameObject _stateUI = default;
     [Header("ステート用UI")]
     [SerializeField] private Material _postProcess = default;
-    private readonly int _noiseTimerID = Shader.PropertyToID("_NoiseTimer");    // シェーダープロパティのReference名
-
+    [Header("ゲームオーバー用UI")]
+    [SerializeField] private GameObject _gameOverPanel = default;
+    // シェーダープロパティのReference名
+    private readonly int _noiseTimerID = Shader.PropertyToID("_NoiseTimer");    
     private void Update()
     {
         //危険度がMAXでないか、ゲームオーバーでない時とき
@@ -117,15 +123,19 @@ public class PlayerRiskState : MonoBehaviour
         }
         PlayerStateManager();
         //デバッグ　
-        Debug.Log($"危険度{_playerRiskPoint}");
+        //Debug.Log($"危険度{_playerRiskPoint}");
     }
     /// <summary>
     /// ゲームオーバー処理
     /// </summary>
     IEnumerator GameOverProcess()
     {
+        this.GetComponent<GameTime>().SetGameTimeFlag(false);
+        _gameOverPanel.SetActive(true);
+        this.GetComponent<AudioManager>().PlayGameOverSound();
         _postProcess.SetFloat(_noiseTimerID, 1.0f);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
+        this.GetComponent<FadeOutBGM>().VolumeChange();
         this.GetComponent<SceneChange>().SceneChangeProcess("GameOver");
         yield return new WaitForSeconds(0.5f);
         _postProcess.SetFloat(_noiseTimerID, 0f);

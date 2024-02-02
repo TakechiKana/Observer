@@ -27,18 +27,32 @@ public class ObjectTypeManager : MonoBehaviour
         //カメラオブジェクトのとき
         if (objectType == Phenomenon.ObjectType.Camera)
         {
-            //Moveコンポーネントを追加する
+            //CameraMoveコンポーネントを追加する
             this.gameObject.AddComponent<CameraMove>();
         }
         //Moveスクリプトをアタッチするオブジェクトのとき
         if (GetAttachmentMoveScriptObject())
         {
             //Moveコンポーネントを追加する
-            this.gameObject.AddComponent<Move>();
+            this.gameObject.AddComponent<MovementObject>();
+        }
+        //消えるオブジェクトのとき(Vanish,Light)
+        if ((objectType == Phenomenon.ObjectType.Vanish)
+            || (objectType == Phenomenon.ObjectType.Light))
+        {
+            //コンポーネントを追加する
+            this.gameObject.AddComponent<Vanish>();
         }
         //非アクティブにするオブジェクトの時
         if (GetHiddenObject())
         {
+            //Addコンポーネントを追加する
+            this.gameObject.AddComponent<Add>();
+            //カメラはAddコンポーネントを破棄する
+            if(objectType == Phenomenon.ObjectType.Camera)
+            {
+                Destroy(GetComponent<Add>());
+            }
             //非アクティブにする
             this.gameObject.SetActive(false);
         }

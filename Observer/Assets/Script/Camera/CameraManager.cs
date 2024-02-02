@@ -13,7 +13,10 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField]
     [Header("ポストエフェクトマテリアル")]
-    private Material _postProcessMat;                                                  //ポストエフェクトマテリアル
+    private Material _postProcessMat;
+    [SerializeField]
+    [Header("カメラ切替時のノイズ音")]
+    private AudioClip _audioClip = default;
     private readonly int _noiseTimerID = Shader.PropertyToID("_NoiseTimer");    // シェーダープロパティのReference名
     private const float CONST_NOISETIMER = 0.1f;                                //ノイズタイマー用定数
     private float _noiseTimer = default;                                         //ノイズタイマー用変数
@@ -110,7 +113,6 @@ public class CameraManager : MonoBehaviour
                 ActiveCamera5();
                 break;
             default:
-                Debug.Log("正しくない番号");
                 break;
 
         }
@@ -181,6 +183,7 @@ public class CameraManager : MonoBehaviour
     public void SetCameraNoiseFlag()
     {
         _cameraNoiseFlag = true;
+        this.GetComponent<AudioSource>().PlayOneShot(_audioClip);
     }
     /// <summary>
     /// カメラ切替フラグの設定

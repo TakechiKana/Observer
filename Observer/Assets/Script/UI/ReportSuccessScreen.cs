@@ -10,6 +10,9 @@ public class ReportSuccessScreen : MonoBehaviour
     [SerializeField] GameObject _afterRepotMessage = default;
     [Header("ゲームタイム")]
     [SerializeField] GameObject _gameTime = default;
+    [Header("ゲームタイム")]
+    [SerializeField] AudioClip _audioClip = default;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,8 @@ public class ReportSuccessScreen : MonoBehaviour
         _gameTime.GetComponent<GameTime>().SetGameTimeFlag(false);
         //タイマーをセット
         _displayTimer = MAX_TIMER;
+        //ノイズを鳴らす
+        this.GetComponent<AudioSource>().PlayOneShot(_audioClip);
     }
 
     private void OnDisable()

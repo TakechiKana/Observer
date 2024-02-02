@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 82e4eba516e5f1740b744f6ed6f5e12e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _mouseClick: {fileID: 8300000, guid: 215fe7af7e13a5b46a011a3b7173c36c, type: 3}
+  - _switchNoise: {fileID: 8300000, guid: 3b9a195e6a8f3df469dc8f45ac7ab37e, type: 3}
+  - _gameOverNoise: {fileID: 8300000, guid: 6f40f35dbe97d7a4899be9bf6399a921, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

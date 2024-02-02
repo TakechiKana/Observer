@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -77,8 +79,8 @@ public class FadeManager : MonoBehaviour
 
     public void SetFadeIn()
     {
-        _isFadeIn = true;
-        _isFadeOut = false;
+        StartCoroutine("WaitFadeIn");
+        
     }
 
     public void SetFadeOut()
@@ -86,7 +88,16 @@ public class FadeManager : MonoBehaviour
         _isFadeOut = true;
         _isFadeIn = false;
     }
-
+    IEnumerator WaitFadeIn()
+    {
+        //1秒待つ
+        yield return new WaitForSeconds(1.0f);
+        //フラグ管理
+        _isFadeIn = true;
+        _isFadeOut = false;
+        //コルーチンを停止
+        yield break;
+    }
     public bool GetIsFadeOut()
     {
         return _isFadeOut;

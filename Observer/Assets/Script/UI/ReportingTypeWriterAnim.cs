@@ -9,6 +9,8 @@ public class ReportingTypeWriterAnim : MonoBehaviour
     [SerializeField] GameObject _repotManager = default;
     [Header("表示テキスト")]
     [SerializeField] string _displayText = default;
+    [Header("表示テキスト")]
+    [SerializeField] AudioClip _audioClip = default;
     //レポート中テキスト
     private TextMeshProUGUI _reportingText = default;
     //アニメーション回数上限（定数）
@@ -40,6 +42,8 @@ public class ReportingTypeWriterAnim : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
+            //電子音を鳴らす
+            this.GetComponent<AudioSource>().PlayOneShot(_audioClip);
             for (int j = 0; j <= DISPLAYTEXT_LENGTH_MAX; j++)
             {
                 //0.2秒待つ
